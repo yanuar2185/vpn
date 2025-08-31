@@ -15,8 +15,9 @@ export function init(request, env, upgradeHeader) {
             return new Response('Failed to parse WebSocket path config', { status: 400 });
         }
 
-        globalThis.proxyIPs = env.PROXY_IP || atob('YnBiLnlvdXNlZi5pc2VnYXJvLmNvbQ==');
-        globalThis.nat64Prefixes = env.NAT64_PREFIX || '[2a02:898:146:64::],[2602:fc59:b0:64::],[2602:fc59:11:64::]';
+        // PERUBAHAN: Ganti proxy default dengan server Indonesia
+        globalThis.proxyIPs = env.PROXY_IP || '3.111.217.79:8443';
+        globalThis.nat64Prefixes = env.NAT64_PREFIX || '';
     }
 
     globalThis.panelVersion = __VERSION__;
@@ -29,7 +30,10 @@ export function init(request, env, upgradeHeader) {
     globalThis.client = searchParams.get('app');
     globalThis.urlOrigin = url.origin;
     globalThis.dohURL = env.DOH_URL || 'https://cloudflare-dns.com/dns-query';
-    globalThis.fallbackDomain = env.FALLBACK || 'speed.cloudflare.com';
+    
+    // PERUBAHAN: Ganti fallback domain dengan server Indonesia
+    globalThis.fallbackDomain = env.FALLBACK || '3.111.217.79:8443';
+    
     globalThis.subPath = env.SUB_PATH || globalThis.userID;
     if (!['/secrets', '/favicon.ico'].includes(globalThis.pathName)) {
         if (typeof env.kv !== 'object') throw new Error('KV Dataset is not properly set! Please refer to tutorials.', { cause: "init" });
